@@ -12,19 +12,22 @@ class Cards extends Component {
 
   render = () => {
     const { allResults, detailsResult } = this.props;
-    const cardItems = allResults?.map((poki, index) => {
-      const test = detailsResult?.filter((x) => {
-        return poki.name === x.name;
+    const cardItems = allResults?.map((singlePokemon, index) => {
+      const pokemonDetails = detailsResult?.filter((x) => {
+        return singlePokemon.name === x.name;
       });
-      console.warn("TEST :", test);
       return (
-        <li key={poki.url}>
+        <li key={singlePokemon.url}>
           <Card>
-            <Card.Img variant="top" src={test[0].imageURL} />
+            <Card.Img variant="top" src={pokemonDetails[0].imageURL} />
             <Card.Body>
-              <Card.Title>{poki?.name}</Card.Title>
-              <Card.Text>{`${"Height is: "}${test[0].height}`}</Card.Text>
-              <Card.Text>{`${"Weight is: "}${test[0].weight}`}</Card.Text>
+              <Card.Title>{singlePokemon.name}</Card.Title>
+              <Card.Text>{`${"Height is: "}${
+                pokemonDetails[0].height
+              }`}</Card.Text>
+              <Card.Text>{`${"Weight is: "}${
+                pokemonDetails[0].weight
+              }`}</Card.Text>
             </Card.Body>
           </Card>
         </li>

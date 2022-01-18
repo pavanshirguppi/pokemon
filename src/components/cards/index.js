@@ -1,44 +1,54 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
 import Card from "react-bootstrap/Card";
-import CardGroup from "react-bootstrap/CardGroup";
+// import CardGroup from "react-bootstrap/CardGroup";
 
-class Cards extends Component {
+class Cards extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   render = () => {
-    const { allResults, detailsResult } = this.props;
-    const cardItems = allResults?.map((singlePokemon, index) => {
-      const pokemonDetails = detailsResult?.filter((x) => {
-        return singlePokemon.name === x.name;
-      });
+    const { detailsResult } = this.props;
+    const cardItems = detailsResult?.map((pokemonDetails, index) => {
       return (
-        <li key={singlePokemon.url}>
-          <Card>
-            <Card.Img variant="top" src={pokemonDetails[0].imageURL} />
+        <div
+          key={pokemonDetails.imageURL}
+          style={{
+            // borderColor: "blue",
+            // border: "solid 1px",
+            alignItems: "center",
+          }}
+        >
+          <Card border="primary" style={{ width: "12rem" }}>
+            <Card.Img
+              style={{ width: "5rem" }}
+              variant="top"
+              src={pokemonDetails.imageURL}
+            />
             <Card.Body>
-              <Card.Title>{singlePokemon.name}</Card.Title>
+              <Card.Title>{pokemonDetails.name.toUpperCase()}</Card.Title>
               <Card.Text>{`${"Height is: "}${
-                pokemonDetails[0].height
+                pokemonDetails.height
               }`}</Card.Text>
               <Card.Text>{`${"Weight is: "}${
-                pokemonDetails[0].weight
+                pokemonDetails.weight
               }`}</Card.Text>
+              {pokemonDetails.abilities.map((ab) => (
+                <Card.Text>{`${"> "} ${ab.ability.name}`}</Card.Text>
+              ))}
             </Card.Body>
           </Card>
-        </li>
+        </div>
       );
     });
-    return <CardGroup>{cardItems}</CardGroup>;
+    return <>{cardItems}</>;
   };
 }
 
 Cards.propTypes = {
-  allResults: PropTypes.array.isRequired,
   detailsResult: PropTypes.array.isRequired,
 };
 

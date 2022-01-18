@@ -1,7 +1,8 @@
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { PureComponent } from "react";
-// import { Col, Row } from "react-bootstrap";
 
-import CardGroup from "react-bootstrap/CardGroup";
+// import { Col, Container, Dropdown, Row } from "react-bootstrap";
+// import CardGroup from "react-bootstrap/CardGroup";
 
 import Cards from "../cards";
 
@@ -47,18 +48,26 @@ class PokemonList extends PureComponent {
                   height,
                   weight,
                   name,
+                  abilities,
                 } = res;
                 const test = other["official-artwork"];
                 dPoki.imageURL = test?.front_default;
                 dPoki.height = height;
                 dPoki.weight = weight;
                 dPoki.name = name;
+                dPoki.abilities = abilities;
 
                 detailsOfPokimon.push(dPoki);
               })
               .then(() => {
-                if (detailsOfPokimon.length === this.state.setResults.length)
+                if (detailsOfPokimon.length === this.state.setResults.length) {
+                  // const last = detailsOfPokimon.filter(
+                  //   (item, index) => detailsOfPokimon.indexOf(item) === index
+                  // );
+                  // console.warn("PK 0 :", detailsOfPokimon);
+                  // console.warn("PK 1 :", last);
                   this.setState({ detailsOfALLPokimon: detailsOfPokimon });
+                }
               })
               .catch((err) => {
                 console.warn("PK single API Err :", err);
@@ -73,24 +82,38 @@ class PokemonList extends PureComponent {
   };
 
   render = () => {
-    const { setResults, detailsOfALLPokimon, limit } = this.state;
+    const { detailsOfALLPokimon } = this.state;
+    return detailsOfALLPokimon.length > 0 ? (
+      <>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            // value={age}
+            label="Age"
+            // onChange={handleChange}
+          >
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+          </Select>
+        </FormControl>
 
-    return detailsOfALLPokimon.length === setResults.length ? (
-      // <Row xs={1} md={2} className="g-4">
-      //   {Array.from({ length: limit }).map((_, idx) => (
-      //     <Col>
-      //       <Cards
-      //         allResults={setResults}
-      //         detailsResult={detailsOfALLPokimon}
-      //       />
-      //     </Col>
-      //   ))}
-      // </Row>
-      <CardGroup>
-        <Cards allResults={setResults} detailsResult={detailsOfALLPokimon} />
-      </CardGroup>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Cards detailsResult={detailsOfALLPokimon} />
+        </div>
+      </>
     ) : (
-      <p>Psst.. server down!</p>
+      <p>Loading...</p>
     );
   };
 }
